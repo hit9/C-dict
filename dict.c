@@ -130,45 +130,41 @@ static int dict_resize(dict_t *dict)
 }
 
 /*
- * add a pair of 'key => value' to dict
+ * if key exists, set the new value.else add a pair of 'key => value' to dict
  */
-int dict_add(dict_t *dict, char *key, void *value)
+void dict_set(dict_t *dict, char *key, void *value)
 {
 	//if need resize
-	if (prime_array[dict->size_pos] - dict->ele_num <1) dict_resize(dict); 
+	if (prime_array[dict->size_pos] - dict->ele_num <= 1) dict_resize(dict); 
 	//get index by hash function
-	int index = get_index(dict, key); 
+	int index = get_index(dict, key), flag = 0; //flag for if find the key
 
 	//get its bucket's head node's pointer
-	bucket_t *first = (dict->bucket)[index], *temp; 
-
-	//init a new node
-	bucket_t *node = (bucket_t *)malloc(sizeof(bucket_t)); 
-	node->key = key; 
-	node->value = value; 
-	node->next = NULL; 
-
-	/* -- append the new node to its bucket(list) if this key is a new one -- */
+	bucket_t *first = (dict->bucket)[index], *temp = first; 
 	
-	//if first is NULL, set node the first 
-	if (!first) (dict->bucket)[index] = node; 
-	else{
-		for (temp = first; temp->next; temp = temp->next)
-			if (strcmp(temp->key, key) == 0) return 0; //key already exists, failed
-		if (strcmp(temp->key, key) == 0) return 0; //cmp again with the last node temp's key
-		temp->next = node; //append it after the last
+	for (; temp; temp = temp->next)
+		if (strcmp(temp->key, key) == 0){
+			temp->value = value; 
+			flag = 1; 
+		}
+	
+	if (!flag){//not find key, new a node , and append it to the list
+		
+		bucket_t *node = (bucket_t *)malloc(sizeof(bucket_t)); 
+		node->key = key; 
+		node->value = value; 
+		node->next = NULL; 
+
+		if (!first) (dict->bucket)[index] = node; 
+		else{
+			for (; first->next; first = first->next); 
+			first->next = node; 
+		}
+		dict->ele_num += 1; 
 	}
-	
-	//ele_num self plus 1
-	dict->ele_num += 1; 
-	
-	return 1; //success
 }
 
-/*
- * lookup
- */
-int dict_lookup(dict_t *dict, char *key, void **value)
+int dict_get(dict_t *dict, char *key, void **value)
 {
 	int index = get_index(dict, key); 
 	bucket_t *first = (dict->bucket)[index]; 
@@ -180,4 +176,32 @@ int dict_lookup(dict_t *dict, char *key, void **value)
 		}
 	}
 	return 0; //failed
+}
+
+int dict_del(dict_t *dict, char *key)
+{
+	int index = get_index(dict, key); 
+	bucket_t *p = (dict->bucket)[index]; 
+	if (!p) return 0; //failed.
+	if (strcmp(p->key, key) == 0){ //if the first is the del node
+		(dict->bucket)[index] = p->next; 
+		free(p); 
+		dict->ele_num -= 1; 
+	}else{
+		for (; p->next && !strcmp(p->next->key, key); p = p->next); //get that node's pre node
+		p->next = p->next->next; 
+		free(p->next); 
+		dict->ele_num -= 1; 
+	}
+	return 1; 
+}
+
+void dict_keys(dict_t *dict, char **key_arr)
+{
+	int size = prime_array[dict->size_pos], i = 0, j = 0; 
+	bucket_t *t = NULL; 
+	
+	for (i = 0; i < size; i++)
+		for (t = dict->bucket[i]; t; t = t->next)
+			key_arr[j++] = t->key; 
 }
