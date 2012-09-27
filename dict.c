@@ -126,6 +126,7 @@ static int dict_resize(dict_t *dict)
 			}
 		}
 	}
+	free(old_bucket); //free old bucket
 	return 1; //success
 }
 
@@ -204,4 +205,29 @@ void dict_keys(dict_t *dict, char **key_arr)
 	for (i = 0; i < size; i++)
 		for (t = dict->bucket[i]; t; t = t->next)
 			key_arr[j++] = t->key; 
+}
+
+void dict_reset(dict_t *dict)
+{
+	int size = prime_array[dict->size_pos], i = 0; 
+	bucket_t *t = NULL, *p = NULL; 
+	
+	for (i = 0; i < size; i++){  //free all nodes
+		for (t = (dict->bucket)[i]; t; p = t, t = t->next, free(p));
+		(dict->bucket)[i] = NULL; 
+	}
+
+	//reset
+	dict->size_pos = 0; 
+	dict->ele_num = 0; 
+	free(dict->bucket); 
+	dict->bucket = (bucket_t **)calloc(prime_array[dict->size_pos], sizeof(bucket_t *)); 
+}
+
+void dict_free(dict_t *dict)
+{
+	
+	dict_reset(dict); 
+	free(dict->bucket); 
+	free(dict); 
 }
