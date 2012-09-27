@@ -103,10 +103,8 @@ static int dict_resize(dict_t *dict)
 	dict->bucket = (bucket_t **)calloc(prime_array[dict->size_pos], sizeof(bucket_t *)); //new bigger 0 space for dict->bucket
 	
 	/* --- begin reinsert .. --- */
-	int i; //iterator for old_bucket[]
-
+	int i, index; //iterator for old_bucket[]
 	bucket_t *t, *p, *q, *node; 
-	int index; 
 
 	for (i = 0; i < old_size; i++){
 		for (t = old_bucket[i]; t; q = t, t = t->next, free(q)){ //free the old node the same time
@@ -210,7 +208,7 @@ void dict_keys(dict_t *dict, char **key_arr)
 void dict_reset(dict_t *dict)
 {
 	int size = prime_array[dict->size_pos], i = 0; 
-	bucket_t *t = NULL, *p = NULL; 
+	bucket_t *t, *p; 
 	
 	for (i = 0; i < size; i++){  //free all nodes
 		for (t = (dict->bucket)[i]; t; p = t, t = t->next, free(p));
@@ -224,10 +222,9 @@ void dict_reset(dict_t *dict)
 	dict->bucket = (bucket_t **)calloc(prime_array[dict->size_pos], sizeof(bucket_t *)); 
 }
 
-void dict_free(dict_t *dict)
+void dict_destory(dict_t *dict)
 {
 	
 	dict_reset(dict); 
 	free(dict->bucket); 
-	free(dict); 
 }
