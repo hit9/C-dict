@@ -226,5 +226,6 @@ void dict_destory(dict_t *dict)
 {
 	
 	dict_reset(dict); 
-	free(dict->bucket); 
+	free(dict->bucket);
+	dict->bucket = NULL; 
 }
