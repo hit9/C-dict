@@ -23,3 +23,8 @@ void dict_destory(dict_t *);
 cd test
 make test
 ```
+
+####Data Type
+```
+dict_t;
+```
