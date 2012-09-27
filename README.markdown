@@ -17,3 +17,9 @@ void dict_reset(dict_t *);
 void dict_destory(dict_t *); 
 
 ```
+
+####Test
+```shell
+cd test
+make test
+```
