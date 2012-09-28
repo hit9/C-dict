@@ -1,37 +1,9 @@
-####API
-```c
-int dict_init(dict_t *); 
+#include <stdio.h>
+#include <stdlib.h>
+#include "dict.h"
 
-int dict_size(dict_t *); 
-
-void dict_set(dict_t *, char *, void *); 
-
-int dict_get(dict_t *, char *, void **); 
-
-int dict_del(dict_t *, char *); 
-
-void dict_keys(dict_t *, char **); 
-
-void dict_reset(dict_t *); 
-
-void dict_destory(dict_t *); 
-
-int dict_iter(dict_t *, char **, void **); 
-```
-
-####Test
-```shell
-cd test
-make test
-```
-
-####Data Type
-```
-dict_t;
-```
-
-####Example
-```c
+int main(int argc, const char *argv[])
+{
 	dict_t *d = (dict_t *)malloc(sizeof(dict_t));
 	char *var; 
 	
@@ -64,4 +36,5 @@ dict_t;
 	
 	dict_destory(d); 
 	free(d); 
-```
+	return 0;
+}
