@@ -16,6 +16,7 @@ void dict_reset(dict_t *);
 
 void dict_destory(dict_t *); 
 
+int dict_iter(dict_t *, char **, void **); 
 ```
 
 ####Test
