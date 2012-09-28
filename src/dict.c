@@ -229,3 +229,20 @@ void dict_destory(dict_t *dict)
 	free(dict->bucket);
 	dict->bucket = NULL; 
 }
+
+int dict_iter(dict_t *dict, char **key_p, void **value_p)
+{
+	int size = prime_array[dict->size_pos]; 
+	
+	static int i = 0; 
+	static bucket_t *p = NULL;
+	
+	for (; !p; p = (dict->bucket)[i++])
+		if (i == size) return 0; 
+	//assign
+	*key_p = p->key; 
+	*value_p = p->value; 
+	//p goto the next
+	p = p->next; 
+	return 1; 
+}
