@@ -65,3 +65,10 @@ dict_t;
 	dict_destory(d); 
 	free(d); 
 ```
+
+#### TODO
+
+```
+dict_merge()
+
+```
