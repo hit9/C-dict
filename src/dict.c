@@ -238,7 +238,10 @@ int dict_iter(dict_t *dict, char **key_p, void **value_p)
 	static bucket_t *p = NULL;
 	
 	for (; !p; p = (dict->bucket)[i++])
-		if (i == size) return 0; 
+		if (i == size){
+			i = 0; //reset i
+			return 0; 
+		}
 	//assign
 	*key_p = p->key; 
 	*value_p = p->value; 
