@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hit9/C-dict.png?branch=master)](https://travis-ci.org/hit9/C-dict)
+
 ####API
 ```c
 int dict_init(dict_t *); 
