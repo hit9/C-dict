@@ -112,6 +112,7 @@ static int dict_resize(dict_t *dict)
             node = (bucket_t *)malloc(sizeof(bucket_t)); 
             node->key = t->key; 
             node->value = t->value; 
+            node->next = 0; 
             
             index = get_index(dict, node->key); 
             p = (dict->bucket)[index];  //get new dict->bucket[index] first node pointer
