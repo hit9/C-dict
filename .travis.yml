@@ -4,7 +4,10 @@ compiler:
   - gcc
   - clang
 
-script: sh ./runtest.sh
+before_install: 
+  - cd test
+
+script: make test
 
 branches:
   only: master
