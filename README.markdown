@@ -1,3 +1,6 @@
+C-dict
+------
+
 [![Build Status](https://travis-ci.org/hit9/C-dict.png?branch=master)](https://travis-ci.org/hit9/C-dict)
 
 ####API
