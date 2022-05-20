@@ -36,5 +36,6 @@ int main(int argc, const char *argv[])
 	
 	dict_destory(d); 
 	free(d); 
+	free(ks);
 	return 0;
 }
